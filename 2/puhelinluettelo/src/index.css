@@ -1,0 +1,70 @@
+body {
+  position: relative;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
+    "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+notification {
+  opacity: 1;
+  display: block;
+  margin: 0px;
+  position: absolute;
+  padding-top: 20px;
+  padding-bottom: 25px;
+  top: 70px;
+  left: 50%;
+
+  width: 200px;
+  margin-left: -100px;
+  color: orange;
+  border: 2px solid;
+  border-color: orange;
+  border-radius: 10px;
+  text-align: center;
+  transition-delay: 2s;
+  transition-duration: 2s;
+  transition-property: background-color, color, opacity, border-color;
+}
+#fade {
+  color: grey;
+  border-color: gray;
+  opacity: 0;
+}
+
+notification h2 {
+  margin: 0;
+}
+#warning {
+  color: red;
+  background-color: yellow;
+  border: 2px solid;
+  border-color: black;
+  transition-delay: 2s;
+  transition-duration: 2s;
+  transition-property: background-color, color, opacity, border-color;
+}
+#error {
+  color: black;
+  border: 2px solid;
+  background-color: red;
+  border-color: black;
+  transition-delay: 2s;
+  transition-duration: 2s;
+  transition-property: background-color, color, opacity, border-color;
+}
+#success {
+  color: green;
+  background-color: white;
+  border: green 2px solid;
+  border-color: green;
+  transition-delay: 2s;
+  transition-duration: 2s;
+  transition-property: background-color, color, opacity, border-color;
+}
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
+    monospace;
+}
