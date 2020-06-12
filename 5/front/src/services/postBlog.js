@@ -7,7 +7,7 @@ const postBlog = async (user, blog) => {
     url: baseUrl,
     data: blog,
     headers: {
-      Authorization: "Bearer " + user.token,
+      Authorization: "Bearer " + user,
     },
   });
 

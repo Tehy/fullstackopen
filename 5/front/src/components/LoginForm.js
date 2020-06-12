@@ -1,11 +1,17 @@
 import React, { useState } from "react";
-import loginService from "../services/login";
+//import loginService from "../services/login";
 
-const LoginForm = ({ auth, notify }) => {
-  const [name, setName] = useState("");
-  const [password, setPassword] = useState("");
+const LoginForm = ({
+  name,
+  password,
+  handleUsernameChange,
+  handlePasswordChange,
+  handleLogin,
+}) => {
+  /* const [name, setName] = useState("");
+  const [password, setPassword] = useState(""); */
 
-  const handleOnSubmit = async (e) => {
+  /*   const handleOnSubmit = async (e) => {
     e.preventDefault();
     //console.log("handleSubmit says hello");
     //console.log("creds", name, password);
@@ -20,8 +26,8 @@ const LoginForm = ({ auth, notify }) => {
     } catch (error) {
       notify("error", "Wrong username or password!");
     }
-  };
-  const handleNameChange = (e) => {
+  }; */
+  /*   const handleNameChange = (e) => {
     const newVal = e.target.value;
     setName(newVal);
   };
@@ -29,15 +35,15 @@ const LoginForm = ({ auth, notify }) => {
     const newVal = e.target.value;
     setPassword(newVal);
   };
-
+ */
   return (
     <>
-      <form onSubmit={handleOnSubmit}>
+      <form onSubmit={handleLogin}>
         username
-        <input onChange={handleNameChange} value={name} />
+        <input onChange={handleUsernameChange} value={name} />
         <br />
         password
-        <input onChange={handlePassChange} value={password} />
+        <input onChange={handlePasswordChange} value={password} />
         <button type="submit">Login</button>
       </form>
     </>

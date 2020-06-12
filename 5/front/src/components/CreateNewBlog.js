@@ -1,64 +1,33 @@
 import React, { useState } from "react";
-import postBlogService from "../services/postBlog";
 
-const CreateNewBlog = (props) => {
+const CreateNewBlog = ({ createBlog }) => {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
   const [url, setUrl] = useState("");
-  const clearInputs = () => {
-    setAuthor("");
-    setTitle("");
-    setUrl("");
-  };
 
-  //console.log("createnewblog props.user", props.user);
-  const handleOnSubmitBlog = async (e) => {
+  const addBlog = (e) => {
     e.preventDefault();
-    //console.log("CreateNewBlog submitting");
-    try {
-      const blog = {
-        title: title,
-        author: author,
-        url: url,
-      };
-      //console.log("CreateNewBlog user blog", props.user, blog);
-      const req = await postBlogService(props.user, blog);
-      //console.log("req", req);
-      if (req.status === 200) {
-        props.updateBlogs();
-        clearInputs();
-        props.notify("success", `Blog "${title}" added!`);
-      }
-    } catch (error) {
-      console.log("CreateNewBlog", error);
-      clearInputs();
-      props.notify("error", `Something went wrong :(`);
-    }
-  };
-  const handleTitleChange = (e) => {
-    const newVal = e.target.value;
-    setTitle(newVal);
-  };
-  const handleAuthorChange = (e) => {
-    const newVal = e.target.value;
-    setAuthor(newVal);
-  };
-  const handleUrlChange = (e) => {
-    const newVal = e.target.value;
-    setUrl(newVal);
+    createBlog({
+      title: title,
+      author: author,
+      url: url,
+    });
+    setTitle("");
+    setAuthor("");
+    setUrl("");
   };
 
   return (
     <>
-      <form onSubmit={handleOnSubmitBlog}>
+      <form onSubmit={addBlog}>
         title
-        <input onChange={handleTitleChange} value={title} required />
+        <input onChange={({ target }) => setTitle(target.value)} />
         <br />
         author
-        <input onChange={handleAuthorChange} value={author} required />
+        <input onChange={({ target }) => setAuthor(target.value)} />
         <br />
         url
-        <input onChange={handleUrlChange} value={url} required />
+        <input onChange={({ target }) => setUrl(target.value)} />
         <br />
         <button type="submit">Create Blog</button>
       </form>
