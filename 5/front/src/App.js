@@ -9,15 +9,11 @@ import Notify from "./components/Notify";
 import Togglable from "./components/Togglable";
 
 const App = () => {
-  const [loginVisible, setLoginVisible] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [blogs, setBlogs] = useState([]);
   const [user, setUser] = useState(null);
   const [notify, setNotify] = useState(null);
-  /*   const [title, setTitle] = useState("");
-  const [author, setAuthor] = useState("");
-  const [url, setUrl] = useState(""); */
 
   const blogFormRef = React.createRef();
 
@@ -123,8 +119,8 @@ const App = () => {
   };
 
   const showBlogs = () => {
-    console.log("blogs", blogs);
-    console.log("user", user);
+    //console.log("blogs", blogs);
+    //console.log("user", user);
     return blogs.map((blog, i) => (
       <div id="blog" key={i}>
         <Blog blog={blog} />
@@ -139,7 +135,7 @@ const App = () => {
               like
             </button>{" "}
             <br />
-            {blog.author}
+            {blog.url}
           </div>
           {showDelBtnIfUserOwnsBlog(blog, user)}
         </Togglable>

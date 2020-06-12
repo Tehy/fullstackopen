@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-//import loginService from "../services/login";
+import React from "react";
 
 const LoginForm = ({
   name,
@@ -8,34 +7,6 @@ const LoginForm = ({
   handlePasswordChange,
   handleLogin,
 }) => {
-  /* const [name, setName] = useState("");
-  const [password, setPassword] = useState(""); */
-
-  /*   const handleOnSubmit = async (e) => {
-    e.preventDefault();
-    //console.log("handleSubmit says hello");
-    //console.log("creds", name, password);
-    try {
-      const resp = await loginService.login({
-        username: name,
-        password: password,
-      });
-      if (resp.token) {
-        auth(resp);
-      }
-    } catch (error) {
-      notify("error", "Wrong username or password!");
-    }
-  }; */
-  /*   const handleNameChange = (e) => {
-    const newVal = e.target.value;
-    setName(newVal);
-  };
-  const handlePassChange = (e) => {
-    const newVal = e.target.value;
-    setPassword(newVal);
-  };
- */
   return (
     <>
       <form onSubmit={handleLogin}>
