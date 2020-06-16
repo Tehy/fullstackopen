@@ -12,7 +12,9 @@ const App = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [blogs, setBlogs] = useState([]);
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(
+    JSON.parse(window.localStorage.getItem("loggedInUser"))
+  );
   const [notify, setNotify] = useState(null);
 
   const blogFormRef = React.createRef();
@@ -26,11 +28,23 @@ const App = () => {
       displayNotify("success", `Blog "${blog.title}" added!`);
     }
   };
+
   useEffect(() => {
-    if (window.localStorage.getItem("loggedInUser")) {
-      console.log("Cookie has user -> ", user);
-      setUser(JSON.parse(window.localStorage.getItem("loggedInUser")));
-    }
+    //let cookie = window.localStorage.getItem("loggedInUser");
+    //console.log("useeffect cookie", cookie);
+    //console.log("cookie", cookie);
+    //setUser(cookie, loadPage());
+    //console.log("Cookie has user -> ", user);
+    /* const setCookie = async () => {
+      if (window.localStorage.getItem("loggedInUser")) {
+        console.log("Cookie has user -> setting user");
+        const userCookie = JSON.parse(
+          window.localStorage.getItem("loggedInUser")
+        );
+
+        setUser(await userCookie);
+      }
+    }; */
   }, []);
   useEffect(() => {
     updateBlogs();
@@ -53,7 +67,6 @@ const App = () => {
 
   const updateBlogs = async () => {
     setBlogs(sortByKey(await blogService.getAll(), "likes"));
-    //setBlogs(await blogService.getAll(), "likes");
   };
 
   const handleLogin = async (e) => {
@@ -64,10 +77,16 @@ const App = () => {
         password: password,
       });
       if (await resp.token) {
-        console.log("login SUCCESS");
-        console.log("resp", resp);
-        setUser(resp);
+        console.log("logging in user");
         window.localStorage.setItem("loggedInUser", JSON.stringify(resp));
+        setUser(resp); // user
+        console.log("resp.username", resp.username);
+
+        console.log("handleLogin SETTING COOKIE");
+        console.log(
+          "COOKIE",
+          window.localStorage.getItem("loggedInUser", JSON.stringify(resp))
+        );
       } else if (!(await resp.token)) {
         console.log("login FAILED");
         displayNotify("error", "Wrong username or password!");
@@ -104,41 +123,32 @@ const App = () => {
     );
   };
   const showDelBtnIfUserOwnsBlog = (blog, user) => {
-    //console.log("showDelBtnIfUserOwnsBlog blog", blog);
-    if (blog.user.username === user.username) {
-      return (
-        <button
-          onClick={() => {
-            deleteBlog(blog, user);
-          }}
-        >
-          remove
-        </button>
-      );
+    //console.log("blog.user.username && user.username", blog.user.username, user.username);
+    if (blog.user.username && user.username) {
+      //console.log("blog.username", blog.user.username);
+      //console.log("user.username", user.username);
+      if (blog.user.username === user.username) {
+        return (
+          <button
+            onClick={() => {
+              deleteBlog(blog, user);
+            }}
+          >
+            remove
+          </button>
+        );
+      }
     }
   };
-
   const showBlogs = () => {
-    //console.log("blogs", blogs);
-    //console.log("user", user);
     return blogs.map((blog, i) => (
-      <div id="blog" key={i}>
-        <Blog blog={blog} />
-        <Togglable buttonLabel="view">
-          <div>
-            Likes: {blog.likes}{" "}
-            <button
-              onClick={() => {
-                plusLike(blog);
-              }}
-            >
-              like
-            </button>{" "}
-            <br />
-            {blog.url}
-          </div>
-          {showDelBtnIfUserOwnsBlog(blog, user)}
-        </Togglable>
+      <div className="blog" key={i}>
+        <Blog
+          blog={blog}
+          plusLike={plusLike}
+          user={user}
+          showDelBtnIfOwner={showDelBtnIfUserOwnsBlog}
+        />
       </div>
     ));
   };
@@ -161,44 +171,43 @@ const App = () => {
   const plusLike = async (blog) => {
     //blogService.likeBlog(blog, user);
     try {
-      console.log("PLUSLIKE blog", blog);
+      console.log("PLUSLIKE blog", blog, user);
       await blogService.likeBlog(blog);
 
       const updtBlogs = blogs.map((b) => {
         if (b.id === blog.id) {
-          //console.log("OLD b.likes", b.likes);
           b.likes += 1;
-          //console.log("NEW b.likes", b.likes);
         }
         return b;
       });
       const sorted = sortByKey(updtBlogs, "likes");
-      //console.log("sorted", sorted);
-      setBlogs(await sorted); //TODO
-      //console.log("PLUSLIKE updtBlogs", updtBlogs);
-      //setBlogs(updtBlogs);
+      setBlogs(await sorted);
     } catch (error) {
       console.log("plusLike error", error);
     }
   };
-  //
-  return (
-    <div>
-      {user ? (
-        <>
-          <p>
-            {user.name} logged in
-            <button onClick={logout}>logout</button>
-          </p>{" "}
-          {notify ? notify : <></>}
-          {createNewBlogForm()}
-          {showBlogs()}
-        </>
-      ) : (
-        loginForm()
-      )}
-    </div>
-  );
+
+  const loadPage = () => {
+    //console.log("LOADPAGE user", user);
+    return (
+      <div>
+        {user ? (
+          <>
+            <p>
+              {user.username} logged in
+              <button onClick={logout}>logout</button>
+            </p>{" "}
+            {notify ? notify : <></>}
+            {createNewBlogForm()}
+            {showBlogs()}
+          </>
+        ) : (
+          loginForm()
+        )}
+      </div>
+    );
+  };
+  return loadPage();
 };
 
 export default App;

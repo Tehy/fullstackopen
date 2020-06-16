@@ -21,13 +21,13 @@ const CreateNewBlog = ({ createBlog }) => {
     <>
       <form onSubmit={addBlog}>
         title
-        <input onChange={({ target }) => setTitle(target.value)} />
+        <input id="title" onChange={({ target }) => setTitle(target.value)} />
         <br />
         author
-        <input onChange={({ target }) => setAuthor(target.value)} />
+        <input id="author" onChange={({ target }) => setAuthor(target.value)} />
         <br />
         url
-        <input onChange={({ target }) => setUrl(target.value)} />
+        <input id="url" onChange={({ target }) => setUrl(target.value)} />
         <br />
         <button type="submit">Create Blog</button>
       </form>
