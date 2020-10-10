@@ -1,10 +1,12 @@
+var timer;
 export const showNotification = (notification, time) => {
   return async (dispatch) => {
     dispatch({
       type: "SHOW_NOTIFICATION",
       notification,
     });
-    var timer = setTimeout(() => {
+    clearTimeout(timer);
+    timer = setTimeout(() => {
       dispatch({
         type: "HIDE_NOTIFICATION",
       });
